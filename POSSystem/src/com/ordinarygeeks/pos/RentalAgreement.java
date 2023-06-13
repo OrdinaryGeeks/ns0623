@@ -253,6 +253,11 @@ public class RentalAgreement {
 			PreDiscountCharge = ChargeDays * DailyRentalCharge;
 		}
 	}
+	
+	public void SetDiscountPercent(int DiscountPercent)
+	{
+		this.DiscountPercent = DiscountPercent;
+	}
 
 	public void GetDiscountPercent() {
 		

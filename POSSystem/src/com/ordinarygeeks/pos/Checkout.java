@@ -30,7 +30,7 @@ public class Checkout {
 		RentalAgreement.SetCheckOutDate(CheckoutDate);
 		RentalAgreement.SetRentalDays(RentalDayCount);
 		RentalAgreement.SetToolCode(ToolCode);
-		RentalAgreement.SetCheckOutDate(CheckoutDate);
+		RentalAgreement.SetDiscountPercent(DiscountPercent);
 		RentalAgreement.Process();
 	}
 	
@@ -43,9 +43,12 @@ public class Checkout {
 		this.CheckoutDate = LocalDate.of(year,  month,  day);
 		
 	}
-	public void setCheckoutDate(LocalDate CheckoutDate) {
-		this.CheckoutDate= CheckoutDate;
+	
+	public void setCheckoutDate(String DateString)
+	{
+		this.CheckoutDate.parse(DateString);
 	}
+
 	
 	public String getToolCode(){
 		return ToolCode;
@@ -79,7 +82,10 @@ public class Checkout {
 		if(DiscountPercent < 0 || DiscountPercent > 100)
 			throw new Exception("Discount Percent should be between 0 and 100");
 		else
+		{
+			System.out.println("Discount percent is " + DiscountPercent);
 			this.DiscountPercent = DiscountPercent;
+		}
 		
 	}
 
