@@ -16,16 +16,18 @@ public class RentalAgreement {
 	int RentalDays;
 	LocalDate CheckOutDate;
 	LocalDate DueDate;
-	double DailyRentalCharge;
+	BigDecimal DailyRentalCharge;
 	int ChargeDays;
-	double PreDiscountCharge;
+	BigDecimal PreDiscountCharge;
 	int DiscountPercent;
-	Double DiscountAmount;
-	double FinalCharge;
+	BigDecimal DiscountAmount;
+	BigDecimal FinalCharge;
 	int PartialWeekDays;
 	int NumberOfFullWeeks;
 	int WeekdayCount;
 	int WeekendDays;
+	
+	Tool CustomerTool;
 	
 	int HolidayDays;
 	LocalDate[] July4ths;
@@ -38,8 +40,15 @@ public class RentalAgreement {
 	
 	public void CalculateDueDate()
 	{
-		
+
 		DueDate = CheckOutDate.plusDays(RentalDays);
+		
+	}
+	
+	public String GetDueDate()
+	{
+		
+		return DateFormatter(DueDate);
 	}
 	
 	public boolean DateALessThanDateB(LocalDate dateA, LocalDate dateB)
@@ -68,47 +77,63 @@ public class RentalAgreement {
 	{
 		
 		if(dateA.getYear() == dateB.getYear())
+		{
 			if(dateA.getMonth() == dateB.getMonth())
+			{
 				if(dateA.getDayOfMonth() == dateB.getDayOfMonth())
+				{
 					return true;
-		
+				}
+			}
+		}
 		return false;
 	}
-	public void CheckIndependenceDayCurrentYear()
+
+	public void processHolidaysForYear(int year)
 	{
-		//Under 365 Days
-		LocalDate currentJuly4th = LocalDate.of(CheckOutDate.getYear(), 7, 4);
-		if(currentJuly4th.getDayOfWeek() == DayOfWeek.SATURDAY)
-			currentJuly4th.withDayOfMonth(3);
-		if(currentJuly4th.getDayOfWeek() == DayOfWeek.SUNDAY)
-			currentJuly4th.withDayOfMonth(5);
+		
+		ProcessIndependenceDays(year);
+		ProcessLaborDays(year);
 		
 
 	}
 	
-	public void processHolidaysForYear(int year)
+	public void ProcessIndependenceDays(int year)
 	{
+
 		//Find July 4th
 		
 		LocalDate currentJuly4th = LocalDate.of(year, 7, 4);
 		if(currentJuly4th.getDayOfWeek() == DayOfWeek.SATURDAY)
+		{
 			currentJuly4th.withDayOfMonth(3);
+		}
 		else if(currentJuly4th.getDayOfWeek() == DayOfWeek.SUNDAY)
+		{
 			currentJuly4th.withDayOfMonth(5);
+		}
 		
 		
 		//if July4th charge day falls between checkout Date and Due date 
 		if(DateALessThanDateB(CheckOutDate, currentJuly4th))
+		{
 			if(DateALessThanDateB(currentJuly4th, DueDate))
 				{
 				HolidayDays++;
-			}
-				
+				}
+		}		
 		//If July4th charge day falls on checkout Date or Due Date
 		if(DateAEqualsDateB(CheckOutDate, currentJuly4th))
+		{
 			HolidayDays++;
+		}
 		if(DateAEqualsDateB(DueDate, currentJuly4th))
+		{
 			HolidayDays++;
+		}
+	}
+	
+	public void ProcessLaborDays(int year) {
 		
 		
 		LocalDate Sept1st = LocalDate.of(year,  9, 1);
@@ -140,59 +165,73 @@ public class RentalAgreement {
 		
 		//if currentLabor Day falls between checkout Date and due date or on one or the other
 		if(DateALessThanDateB(CheckOutDate, currentLaborDay))
+		{
 			if(DateALessThanDateB(currentLaborDay, DueDate))
+			{
 				HolidayDays++;
-		
+			}
+		}
 		
 		if(DateAEqualsDateB(CheckOutDate, currentLaborDay))
+		{
 			HolidayDays++;
+		}
 		if(DateAEqualsDateB(DueDate, currentLaborDay))
+		{
 			HolidayDays++;
+		}
+	}
+
+	
+	public void SetTool()
+	{
+		CustomerTool = PointOfSale.Inventory.GetTool(ToolCode);
+		
+	}
+	public void SetToolType()
+	{
+		ToolType = CustomerTool.getType();
 	}
 	
-	public void Process()
+	public void SetToolBrand()
 	{
-		Tool CustomerTool = PointOfSale.Inventory.GetTool(ToolCode);
+		ToolBrand = CustomerTool.getBrand();
+	}
+	
+	public String GetToolCode() {
+		return ToolCode;
+	}
+	
+	public String GetToolBrand() {
+		return ToolBrand;
+	}
+	public String GetToolType() {
 		
-		ToolBrand= CustomerTool.getBrand();
-		ToolType = CustomerTool.getType();
-		
-		CalculateDueDate();
-		GetDailyRentalCharge();
-		GetChargeableDays();
-		GetPreDiscountCharge();
-		GetDiscountPercent();
-		GetFinalCharge();
-		
-		
-		Print();
-		
-		
+		return ToolType;
 	}
 	
 	public void Print() {
 		
-		System.out.println("Tool code " + ToolCode);
-		System.out.println("Tool type " + ToolType);
-		System.out.println("Tool brand " + ToolBrand);
-		System.out.println("Rental days " + RentalDays);
-		System.out.println("Check out date " + DateFormatter(CheckOutDate));
-		System.out.println("Due date " + DateFormatter(DueDate));
-		System.out.println("Daily rental charge " + CurrencyFormatter(DailyRentalCharge));
-		System.out.println("Charge days " + ChargeDays);
-		System.out.println("Pre-discount charge " + CurrencyFormatter(PreDiscountCharge));
-		System.out.println("Discount Percent " + DiscountPercent + "%");
-		System.out.println("Discount amount " + CurrencyFormatter(DiscountAmount));
-		System.out.println("Final Charge " + CurrencyFormatter(FinalCharge));
-		
-		
-		
-		
-		
-		
-		
+		System.out.println("Tool code " + GetToolCode());
+		System.out.println("Tool type " + GetToolType());
+		System.out.println("Tool brand " + GetToolBrand());
+		System.out.println("Rental days " + GetRentalDays());
+		System.out.println("Check out date " +GetCheckoutDate()); 
+		System.out.println("Due date " + GetDueDate());
+		System.out.println("Daily rental charge " + GetDailyRentalCharge());
+		System.out.println("Charge days " + GetChargeableDays());
+		System.out.println("Pre-discount charge " + GetPreDiscountCharge());
+		System.out.println("Discount Percent " + GetDiscountPercent());
+		System.out.println("Discount amount " + GetDiscountAmount());
+		System.out.println("Final Charge " + GetFinalCharge());
+	
 	}
 	
+	public String GetCheckoutDate()
+	{
+		
+		return DateFormatter(CheckOutDate);
+	}
 	public String DateFormatter(LocalDate LocalDate)
 	{
 		
@@ -206,11 +245,8 @@ public class RentalAgreement {
 	}
 	
 	
-	
-	public void GetChargeableDays()
-	{
-		
-		//get start year 
+	public void CalculateChargeableDays() {
+	//get start year 
 		
 		int StartYear=CheckOutDate.getYear();
 		int EndYear =DueDate.getYear();
@@ -232,106 +268,151 @@ public class RentalAgreement {
 		
 		ChargeDays = RentalDays - WeekendDays - HolidayDays;
 		
-	
-		
-		
-		
 	}
 	
-	public void GetPreDiscountCharge() {
+	public int GetChargeableDays()
+	{
+			return ChargeDays;
+	}
+	
+	public void CalculatePreDiscountCharge() {
 		
-		if(ToolType == "Ladder")
+		if(ToolType == "Ladder" || ToolType == "Chainsaw" || ToolType=="Jackhammer")
 		{
-			PreDiscountCharge = ChargeDays * DailyRentalCharge;
+			PreDiscountCharge =  DailyRentalCharge.multiply(new BigDecimal(ChargeDays));
 		}
-		if(ToolType == "Chainsaw")
-		{
-			PreDiscountCharge = ChargeDays * DailyRentalCharge;
-		}
-		if(ToolType == "Jackhammer")
-		{
-			PreDiscountCharge = ChargeDays * DailyRentalCharge;
-		}
+			
+	}
+	
+	public String GetPreDiscountCharge() {
+		
+	return CurrencyFormatter(PreDiscountCharge);
+
+	}
+	
+	public void SetDiscountPercent(int DiscountPercent)
+	{
+		this.DiscountPercent = DiscountPercent;
+	}
+	
+	public String GetDiscountPercent() {
+		
+		return DiscountPercent + "%";
 	}
 
-	public void GetDiscountPercent() {
-		
-		DiscountAmount = PreDiscountCharge * (float)DiscountPercent/100.0f;
-		
-	}
-	public void DiscountAmountRounding()
-	{
 	
-		BigDecimal DiscountAmountBigDecimal = new BigDecimal(Double.toString(DiscountAmount));
+	public void CalculateDiscountAmount() {
 		
-		DiscountAmountBigDecimal.setScale(2, RoundingMode.HALF_UP);
+		DiscountAmount = new BigDecimal(DiscountPercent/100.0).multiply(PreDiscountCharge);
 		
-		DiscountAmount = DiscountAmountBigDecimal.doubleValue();
-		
+		DiscountAmount = DiscountAmount.setScale(2, RoundingMode.HALF_UP);	
 	}
-	
-	public String CurrencyFormatter(double Currency)
+	public String GetDiscountAmount() {
+		
+		return CurrencyFormatter(DiscountAmount);
+	}
+
+	public String CurrencyFormatter(BigDecimal Currency)
 	{
 		
 		Locale locale = new Locale("en", "US");
 		NumberFormat format = NumberFormat.getCurrencyInstance(locale);
 		return format.format(Currency);
 	}
-	public void GetFinalCharge() {
-		FinalCharge = PreDiscountCharge - DiscountAmount;
+	
+	public String CurrencyFormatter(long Currency)
+	{
+		
+		Locale locale = new Locale("en", "US");
+		NumberFormat format = NumberFormat.getCurrencyInstance(locale);
+		return format.format(Currency);
+	}
+	
+	public void CalculateFinalCharge() {
+		
+
+		FinalCharge = PreDiscountCharge.subtract(DiscountAmount);
+	}
+	public String GetFinalCharge() {
+	
+		return CurrencyFormatter(FinalCharge);
 	}
 	public void CountWeekendDays()
 	{
 		
-		 NumberOfFullWeeks = RentalDays / 7;
+		NumberOfFullWeeks = RentalDays / 7;
 		PartialWeekDays = RentalDays % 7;
-		 WeekendDays =0;
+		WeekendDays =0;
 		switch(CheckOutDate.getDayOfWeek()) {
 		
 		case MONDAY:
 			WeekendDays += NumberOfFullWeeks*2;
 			if(PartialWeekDays == 6)//Saturday
+			{
 				WeekendDays += 1;
+			}
 		break;
 		case TUESDAY:
 			WeekendDays += NumberOfFullWeeks * 2;
 			if(PartialWeekDays>=5)//Saturday
+			{
 				WeekendDays += 1;
+			}
 			if(PartialWeekDays == 6)//Sunday
+			{
 				WeekendDays += 1;
+			}
 		break;
 		case WEDNESDAY:
 			WeekendDays += NumberOfFullWeeks * 2;
 			if(PartialWeekDays>=4)//Saturday
+			{
 				WeekendDays += 1;
+			}
 			if(PartialWeekDays >= 5)//Sunday
+			{
 				WeekendDays += 1;
+			}
 			break;
 		case THURSDAY:
 			WeekendDays += NumberOfFullWeeks * 2;
 			if(PartialWeekDays>=3)//Saturday
+			{
 				WeekendDays += 1;
+			}
 			if(PartialWeekDays >= 4)//Sunday
+			{
 				WeekendDays += 1;
+			}
 			break;
 		case FRIDAY:
 			WeekendDays += NumberOfFullWeeks * 2;
 			if(PartialWeekDays>=2)//Saturday
+			{
 				WeekendDays += 1;
+			}
 			if(PartialWeekDays >=3)//Sunday
+			{
 				WeekendDays += 1;
+			}
 			break;
 		case SATURDAY:
 			WeekendDays += NumberOfFullWeeks * 2;
 			if(PartialWeekDays>=1)//Saturday
+			{
 				WeekendDays += 1;
+			}
 			if(PartialWeekDays >=2)//Sunday
+			{
 				WeekendDays += 1;
+			}
 			break;
 		case SUNDAY:
 			WeekendDays += NumberOfFullWeeks * 2;
 			if(PartialWeekDays >=1)//Sunday
+			{
 				WeekendDays += 1;
+			}
 			break;
 		}
 		
@@ -341,19 +422,34 @@ public class RentalAgreement {
 		
 		this.ToolCode = ToolCode;
 	}
-	public void GetDailyRentalCharge() {
-		
+	
+	public void AssignDailyRentalCharge() {
 		
 		if(this.ToolType == "Ladder")
-			DailyRentalCharge = 1.99;
+		{
+			DailyRentalCharge = new BigDecimal(1.99);
+		}
 		if(this.ToolType == "Chainsaw")
-			DailyRentalCharge = 1.49;
+		{
+			DailyRentalCharge = new BigDecimal(1.49);
+		}
 		if(this.ToolType == "Jackhammer")
-			DailyRentalCharge= 2.99;
+		{
+			DailyRentalCharge= new BigDecimal(2.99);
+		}
+	}
+	public String GetDailyRentalCharge() {
+		
+		return CurrencyFormatter(DailyRentalCharge);
 	}
 
 	public void SetToolBrand(String ToolBrand) {
 		this.ToolBrand = ToolBrand;
+	}
+	public int GetRentalDays()
+	{
+		return this.RentalDays;
+		
 	}
 	public void SetRentalDays(int RentalDays) {
 		this.RentalDays = RentalDays;

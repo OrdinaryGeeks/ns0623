@@ -8,7 +8,7 @@ public class Checkout {
 	private int RentalDayCount;
 	private int DiscountPercent;
 	private LocalDate CheckoutDate;
-	private RentalAgreement RentalAgreement; 
+	public RentalAgreement RentalAgreement; 
 	
 	public Checkout()
 	{
@@ -30,8 +30,24 @@ public class Checkout {
 		RentalAgreement.SetCheckOutDate(CheckoutDate);
 		RentalAgreement.SetRentalDays(RentalDayCount);
 		RentalAgreement.SetToolCode(ToolCode);
-		RentalAgreement.SetCheckOutDate(CheckoutDate);
-		RentalAgreement.Process();
+		RentalAgreement.SetTool();
+		RentalAgreement.SetToolBrand();
+		RentalAgreement.SetToolType();
+		RentalAgreement.SetDiscountPercent(DiscountPercent);
+		RentalAgreement.AssignDailyRentalCharge();
+		RentalAgreement.CalculateDueDate();
+		RentalAgreement.CalculateChargeableDays();
+		RentalAgreement.CalculatePreDiscountCharge();
+		RentalAgreement.CalculateDiscountAmount();
+		RentalAgreement.CalculateFinalCharge();
+		
+		
+		
+	}
+	
+	public void PrintRentalAgreement()
+	{
+		RentalAgreement.Print();
 	}
 	
 	public LocalDate getCheckoutDate() {
@@ -43,9 +59,12 @@ public class Checkout {
 		this.CheckoutDate = LocalDate.of(year,  month,  day);
 		
 	}
-	public void setCheckoutDate(LocalDate CheckoutDate) {
-		this.CheckoutDate= CheckoutDate;
+	
+	public void setCheckoutDate(String DateString)
+	{
+		this.CheckoutDate.parse(DateString);
 	}
+
 	
 	public String getToolCode(){
 		return ToolCode;
@@ -53,7 +72,10 @@ public class Checkout {
 	public void setToolCode(String ToolCode) throws Exception {
 	
 		if(PointOfSale.Inventory.GetTool(ToolCode)==null)
+		{
 			throw new Exception("Tool Code is not in the Inventory");
+		}
+		
 		this.ToolCode = ToolCode;
 	}
 	
@@ -64,9 +86,13 @@ public class Checkout {
 	public void setRentalDayCount(int RentalDayCount) throws Exception
 	{
 		if(RentalDayCount < 1)
+		{
 			throw new Exception("Rental Day Count should be 1 or greater");
+		}
 		else
+		{
 			this.RentalDayCount = RentalDayCount;
+		}
 	}
 	
 	public int getDiscountPercent()
@@ -77,9 +103,14 @@ public class Checkout {
 	public void setDiscountPercent(int DiscountPercent) throws Exception{
 		
 		if(DiscountPercent < 0 || DiscountPercent > 100)
-			throw new Exception("Discount Percent should be between 0 and 100");
+		{
+			throw new Exception("Discount Percent should be between 0 and 100.");
+		}
 		else
+		{
+			
 			this.DiscountPercent = DiscountPercent;
+		}
 		
 	}
 
