@@ -58,7 +58,7 @@ public class SaveUserInput {
 						UserCheckout.RentalAgreement.Print();
 					}
 				}
-				}
+			}
 				
 			}
 			}
@@ -77,15 +77,15 @@ public boolean QueryForRunPointOfSale()
 	String runPosAgain;
 	
 	do {
-System.out.println("Do you want to run the pos system again? Y/N");
+		System.out.println("Do you want to run the pos system again? Y/N");
 
- runPosAgain = input.nextLine();
+		runPosAgain = input.nextLine();
  
 
- if(!runPosAgain.equals("Y") &! runPosAgain.equals("N"))
-	 System.out.println("Invalid answer");
+		if(!runPosAgain.equals("Y") &! runPosAgain.equals("N"))
+			System.out.println("Invalid answer");
  
-	}
+		}
 	while(!runPosAgain.equals("Y") &! runPosAgain.equals("N"));
 	
 	if(runPosAgain.equals("Y"))
@@ -130,13 +130,17 @@ public int QueryForRentalDays() {
 		try {
 		RentalDays = input.nextInt();
 		if(input.hasNextLine())
-		input.nextLine();
+		{
+			input.nextLine();
+		}
 		return RentalDays;
 		}
 		catch(InputMismatchException mismatch)
 		{
 			if(input.hasNextLine())
-			input.nextLine();
+			{
+				input.nextLine();
+			}
 		System.out.println("Please enter a whole number greater than 0 for number of rental days");
 	
 		return -1;
@@ -157,8 +161,12 @@ public  boolean SaveRentalDays(int RentalDays)
 		catch(Exception rentalDaysException)
 		{
 			if(SystemIOInput)
-			if(input.hasNextLine())
-			input.nextLine();
+			{
+				if(input.hasNextLine())
+					{
+						input.nextLine();
+					}
+			}
 		
 			System.out.println(rentalDaysException.getMessage());
 			return false;
@@ -174,14 +182,18 @@ public  int QueryForDiscountPercent() {
 		
 		int DiscountPercent = input.nextInt();
 		if(input.hasNextLine())
-		input.nextLine();
+		{
+			input.nextLine();
+		}
 		return DiscountPercent;
 		}
 	catch(InputMismatchException mismatch)
 		{
 			System.out.println("Please enter a whole number 0 - 100 for Discount Percent");
 			if(input.hasNextLine())
-			input.nextLine();
+			{
+				input.nextLine();
+			}
 			return -1;
 			}
 	
@@ -197,8 +209,12 @@ public  boolean SaveDiscountPercent(int DiscountPercent) {
 	catch(Exception DiscountPercentException)
 	{
 		if(SystemIOInput)
-		if(input.hasNextLine())
-		input.nextLine();
+		{
+			if(input.hasNextLine())
+			{
+				input.nextLine();
+			}
+		}
 		System.out.println(DiscountPercentException.getMessage());
 		return false;
 	}

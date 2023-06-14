@@ -72,7 +72,10 @@ public class Checkout {
 	public void setToolCode(String ToolCode) throws Exception {
 	
 		if(PointOfSale.Inventory.GetTool(ToolCode)==null)
+		{
 			throw new Exception("Tool Code is not in the Inventory");
+		}
+		
 		this.ToolCode = ToolCode;
 	}
 	
@@ -83,9 +86,13 @@ public class Checkout {
 	public void setRentalDayCount(int RentalDayCount) throws Exception
 	{
 		if(RentalDayCount < 1)
+		{
 			throw new Exception("Rental Day Count should be 1 or greater");
+		}
 		else
+		{
 			this.RentalDayCount = RentalDayCount;
+		}
 	}
 	
 	public int getDiscountPercent()
@@ -96,7 +103,9 @@ public class Checkout {
 	public void setDiscountPercent(int DiscountPercent) throws Exception{
 		
 		if(DiscountPercent < 0 || DiscountPercent > 100)
+		{
 			throw new Exception("Discount Percent should be between 0 and 100.");
+		}
 		else
 		{
 			
