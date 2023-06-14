@@ -89,7 +89,10 @@ public boolean QueryForRunPointOfSale()
 	while(!runPosAgain.equals("Y") &! runPosAgain.equals("N"));
 	
 	if(runPosAgain.equals("Y"))
+	{
+		UserCheckout = new Checkout();
 		return true;
+	}
 	else
 		return false;
 	
