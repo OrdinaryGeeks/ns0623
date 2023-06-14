@@ -13,16 +13,16 @@ public class PointOfSale {
 
 		LoadTools();
 		
-		InitializeUserInput();
+		InitializeUserInput(true);
 		
 		SaveUserInput.RunPointOfSale();
 
 }
 
 
-	public static void InitializeUserInput()
+	public static void InitializeUserInput(boolean IOInput)
 	{
-		SaveUserInput = new SaveUserInput();
+		SaveUserInput = new SaveUserInput(IOInput);
 	}
 	
 	

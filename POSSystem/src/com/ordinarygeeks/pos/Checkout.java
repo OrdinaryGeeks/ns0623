@@ -8,7 +8,7 @@ public class Checkout {
 	private int RentalDayCount;
 	private int DiscountPercent;
 	private LocalDate CheckoutDate;
-	private RentalAgreement RentalAgreement; 
+	public RentalAgreement RentalAgreement; 
 	
 	public Checkout()
 	{
@@ -30,8 +30,24 @@ public class Checkout {
 		RentalAgreement.SetCheckOutDate(CheckoutDate);
 		RentalAgreement.SetRentalDays(RentalDayCount);
 		RentalAgreement.SetToolCode(ToolCode);
+		RentalAgreement.SetTool();
+		RentalAgreement.SetToolBrand();
+		RentalAgreement.SetToolType();
 		RentalAgreement.SetDiscountPercent(DiscountPercent);
-		RentalAgreement.Process();
+		RentalAgreement.AssignDailyRentalCharge();
+		RentalAgreement.CalculateDueDate();
+		RentalAgreement.CalculateChargeableDays();
+		RentalAgreement.CalculatePreDiscountCharge();
+		RentalAgreement.CalculateDiscountAmount();
+		RentalAgreement.CalculateFinalCharge();
+		
+		
+		
+	}
+	
+	public void PrintRentalAgreement()
+	{
+		RentalAgreement.Print();
 	}
 	
 	public LocalDate getCheckoutDate() {
@@ -80,10 +96,10 @@ public class Checkout {
 	public void setDiscountPercent(int DiscountPercent) throws Exception{
 		
 		if(DiscountPercent < 0 || DiscountPercent > 100)
-			throw new Exception("Discount Percent should be between 0 and 100");
+			throw new Exception("Discount Percent should be between 0 and 100.");
 		else
 		{
-			System.out.println("Discount percent is " + DiscountPercent);
+			
 			this.DiscountPercent = DiscountPercent;
 		}
 		

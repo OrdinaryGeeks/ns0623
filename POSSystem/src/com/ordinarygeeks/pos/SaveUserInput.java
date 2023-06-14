@@ -7,25 +7,45 @@ import java.util.Scanner;
 
 public class SaveUserInput {
 
-	Checkout UserCheckout;
+	static Checkout UserCheckout;
 	Scanner input;
-	public SaveUserInput()
+	
+	boolean ToolCodeValid;
+	boolean RentalDaysValid;
+	boolean DiscountPercentValid;
+	boolean CheckoutDateValid;
+	boolean PointOfSaleInstance;
+	boolean SystemIOInput;
+	public SaveUserInput(boolean isIoInput)
 	{
 		UserCheckout = new Checkout();
 		input = new Scanner(System.in);
+		
+		SystemIOInput = isIoInput;
+		RentalDaysValid = false;
+		DiscountPercentValid = false;
+		CheckoutDateValid = false;
+		PointOfSaleInstance = true;
 	}
 
 	public void RunPointOfSale()
 	{
+		
+		do {
+		
 		String ToolCode = QueryForToolCode();
 		if(SaveToolCode(ToolCode))
 		{
 			int RentalDays = QueryForRentalDays();
 			
+			if(RentalDays != -1)
+			{
 			if(SaveRentalDays(RentalDays))
 			{
 				int DiscountPercent = QueryForDiscountPercent();
 				
+				if(DiscountPercent != -1)
+				{
 				if(SaveDiscountPercent(DiscountPercent))
 				{
 					String CheckoutDate = QueryForDate();
@@ -35,117 +55,48 @@ public class SaveUserInput {
 					{
 						
 						UserCheckout.ProcessRentalAgreement();
+						UserCheckout.RentalAgreement.Print();
 					}
+				}
 				}
 				
 			}
-			
+			}
 		}
-	}
-	
-	public String QueryForDate()
-	{
-		System.out.println("Enter date for checkout in format mm/dd/yy");
 		
-	
-		String dateString =input.next();
+		}while(QueryForRunPointOfSale());
 		
-		
-		
-		return dateString;
-		
-		
-	}
+		System.out.println("Exiting Point Of Sale System");
+		System.exit(0);
+		}
 	
 
-	public int ParseString(String parseable)
-	{
-		
-		return Integer.parseInt(parseable);
-	}
-public  boolean SaveDate(String DateString)
+public boolean QueryForRunPointOfSale()
 {
 	
-	String[] DateSplitArray = DateString.split("/");
+	String runPosAgain;
+	
+	do {
+System.out.println("Do you want to run the pos system again? Y/N");
 
-	try {
-		UserCheckout.setCheckoutDate(2000+ParseString(DateSplitArray[2]), ParseString(DateSplitArray[0]), ParseString(DateSplitArray[1]));
+ runPosAgain = input.nextLine();
+ 
+
+ if(!runPosAgain.equals("Y") &! runPosAgain.equals("N"))
+	 System.out.println("Invalid answer");
+ 
+	}
+	while(!runPosAgain.equals("Y") &! runPosAgain.equals("N"));
+	
+	if(runPosAgain.equals("Y"))
 		return true;
-	}
-	catch(DateTimeException CheckoutDateException)
-	{
-	    System.out.println("There is an error with the checkout date");
-	    return false;
-	}
-	
-}
-
-public  int QueryForYear() {
-	
-	System.out.println("Enter year for checkout reservation ");
-	
-	
-	int Year = input.nextInt();
-	return Year;
-	
-
-		
-}
-public  int QueryForMonth() {
-	
-	System.out.println("Enter month for checkout reservation ");
-	
-	
-	int Month = input.nextInt();
-	return Month;
-
-
-		
-}
-
-public  int QueryForDay() {
-	
-	System.out.println("Enter day for checkout reservation ");
-	
-	
-	int Day = input.nextInt();
-	return Day;
-	
-
-		
-}
-public  int QueryForDiscountPercent() {
-	
-	try {
-		
-		System.out.println("Enter whole number 0-100 for discount percent");
-		
-		int DiscountPercent = input.nextInt();	
-		return DiscountPercent;
-		}
-	catch(InputMismatchException mismatch)
-		{
-			System.out.println("Please enter a whole number for Discount Percent");
-			input.nextLine();
-			
-			return -1;
-			}
-	
-}
-public  boolean SaveDiscountPercent(int DiscountPercent) {
-	
-	try {
-
-	UserCheckout.setDiscountPercent(DiscountPercent);
-	return true;
-	}
-
-	catch(Exception DiscountPercentException)
-	{
-		System.out.println(DiscountPercentException.getMessage());
+	else
 		return false;
-	}
+	
 }
+	
+
+	
 
 public  String QueryForToolCode() {
 		
@@ -155,14 +106,17 @@ public  String QueryForToolCode() {
 		
 		return UserToolCode;
 	}
+
 public  boolean SaveToolCode(String UserToolCode) {
 					
 		try {
+		
 		UserCheckout.setToolCode(UserToolCode);
 		return true;
 		}
 		catch(Exception setToolCodeException)
 		{
+			
 			System.out.println(setToolCodeException.getMessage());
 			return false;
 		}
@@ -175,12 +129,16 @@ public int QueryForRentalDays() {
 		
 		try {
 		RentalDays = input.nextInt();
+		if(input.hasNextLine())
+		input.nextLine();
 		return RentalDays;
 		}
 		catch(InputMismatchException mismatch)
 		{
-		System.out.println("Please enter a whole number for number of rental days");
-		input.nextLine();
+			if(input.hasNextLine())
+			input.nextLine();
+		System.out.println("Please enter a whole number greater than 0 for number of rental days");
+	
 		return -1;
 		}
 		
@@ -198,8 +156,89 @@ public  boolean SaveRentalDays(int RentalDays)
 	
 		catch(Exception rentalDaysException)
 		{
+			if(SystemIOInput)
+			if(input.hasNextLine())
+			input.nextLine();
+		
 			System.out.println(rentalDaysException.getMessage());
 			return false;
 		}	
 	}
+
+
+public  int QueryForDiscountPercent() {
+	
+	try {
+		
+		System.out.println("Enter whole number 0-100 for discount percent");
+		
+		int DiscountPercent = input.nextInt();
+		if(input.hasNextLine())
+		input.nextLine();
+		return DiscountPercent;
+		}
+	catch(InputMismatchException mismatch)
+		{
+			System.out.println("Please enter a whole number 0 - 100 for Discount Percent");
+			if(input.hasNextLine())
+			input.nextLine();
+			return -1;
+			}
+	
+}
+public  boolean SaveDiscountPercent(int DiscountPercent) {
+	
+	try {
+
+	UserCheckout.setDiscountPercent(DiscountPercent);
+	return true;
+	}
+
+	catch(Exception DiscountPercentException)
+	{
+		if(SystemIOInput)
+		if(input.hasNextLine())
+		input.nextLine();
+		System.out.println(DiscountPercentException.getMessage());
+		return false;
+	}
+}
+
+public String QueryForDate()
+{
+	System.out.println("Enter date for checkout in format mm/dd/yy");
+	
+
+	String dateString =input.nextLine();
+	
+	
+	
+	return dateString;
+	
+	
+}
+
+
+public int ParseString(String parseable)
+{
+	
+	return Integer.parseInt(parseable);
+}
+public  boolean SaveDate(String DateString)
+{
+
+String[] DateSplitArray = DateString.split("/");
+
+try {
+	UserCheckout.setCheckoutDate(2000+ParseString(DateSplitArray[2]), ParseString(DateSplitArray[0]), ParseString(DateSplitArray[1]));
+	return true;
+}
+catch(DateTimeException CheckoutDateException)
+{
+    System.out.println("There is an error with the checkout date");
+    return false;
+}
+
+}
+
 }
