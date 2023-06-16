@@ -21,7 +21,7 @@ public class Test2RentalAgreement {
 		pos.SaveUserInput.SaveRentalDays(3);
 		pos.SaveUserInput.SaveDiscountPercent(10);
 		
-		pos.SaveUserInput.UserCheckout.ProcessRentalAgreement();
+		pos.SaveUserInput.GetUserCheckout().ProcessRentalAgreement();
 	}
 	
 
@@ -33,53 +33,53 @@ public class Test2RentalAgreement {
 	@Test
 	public void testGetDueDate() {
 		
-		assertEquals("07/05/20",SaveUserInput.UserCheckout.RentalAgreement.GetDueDate());
+		assertEquals("07/05/20",SaveUserInput.GetUserCheckout().RentalAgreement.GetDueDate());
 	}
 
 	@Test
 	public void testGetToolCode() {
-		assertEquals("LADW",SaveUserInput.UserCheckout.RentalAgreement.GetToolCode());
+		assertEquals("LADW",SaveUserInput.GetUserCheckout().RentalAgreement.GetToolCode());
 	}
 
 	@Test
 	public void testGetToolBrand() {
-		assertEquals("Werner",SaveUserInput.UserCheckout.RentalAgreement.GetToolBrand());
+		assertEquals("Werner",SaveUserInput.GetUserCheckout().RentalAgreement.GetToolBrand());
 	}
 
 	@Test
 	public void testGetToolType() {
-		assertEquals("Ladder",SaveUserInput.UserCheckout.RentalAgreement.GetToolType());
+		assertEquals("Ladder",SaveUserInput.GetUserCheckout().RentalAgreement.GetToolType());
 	}
 
 	@Test
 	public void testGetCheckoutDate() {
-		assertEquals("07/02/20",SaveUserInput.UserCheckout.RentalAgreement.GetCheckoutDate());
+		assertEquals("07/02/20",SaveUserInput.GetUserCheckout().RentalAgreement.GetCheckoutDate());
 	}
 
 	@Test
 	public void testGetChargeableDays() {
-		assertEquals(2, SaveUserInput.UserCheckout.RentalAgreement.GetChargeableDays());
+		assertEquals(2, SaveUserInput.GetUserCheckout().RentalAgreement.GetChargeableDays());
 	}
 
 	@Test
 	public void testGetPreDiscountCharge() {
 
-		assertEquals("$3.98", SaveUserInput.UserCheckout.RentalAgreement.GetPreDiscountCharge());
+		assertEquals("$3.98", SaveUserInput.GetUserCheckout().RentalAgreement.GetPreDiscountCharge());
 	}
 
 	@Test
 	public void testGetDiscountAmount() {
-		assertEquals("$0.40", SaveUserInput.UserCheckout.RentalAgreement.GetDiscountAmount());
+		assertEquals("$0.40", SaveUserInput.GetUserCheckout().RentalAgreement.GetDiscountAmount());
 	}
 
 	@Test
 	public void testGetFinalCharge() {
-		assertEquals("$3.58", SaveUserInput.UserCheckout.RentalAgreement.GetFinalCharge());
+		assertEquals("$3.58", SaveUserInput.GetUserCheckout().RentalAgreement.GetFinalCharge());
 	}
 
 	@Test
 	public void testGetDailyRentalCharge() {
-		assertEquals("$1.99", SaveUserInput.UserCheckout.RentalAgreement.GetDailyRentalCharge());
+		assertEquals("$1.99", SaveUserInput.GetUserCheckout().RentalAgreement.GetDailyRentalCharge());
 	}
 
 }

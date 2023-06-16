@@ -6,7 +6,7 @@ import java.util.Hashtable;
 public class Inventory {
 
 	
-	Dictionary<String, Tool> Stock;
+	private Dictionary<String, Tool> Stock;
 	
 	public Inventory()
 	{

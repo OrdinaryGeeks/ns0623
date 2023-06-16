@@ -7,15 +7,15 @@ import java.util.Scanner;
 
 public class SaveUserInput {
 
-	static Checkout UserCheckout;
-	Scanner input;
+	private static Checkout UserCheckout;
+	private Scanner input;
 	
-	boolean ToolCodeValid;
-	boolean RentalDaysValid;
-	boolean DiscountPercentValid;
-	boolean CheckoutDateValid;
-	boolean PointOfSaleInstance;
-	boolean SystemIOInput;
+	private boolean ToolCodeValid;
+	private boolean RentalDaysValid;
+	private boolean DiscountPercentValid;
+	private boolean CheckoutDateValid;
+	private boolean PointOfSaleInstance;
+	private boolean SystemIOInput;
 	public SaveUserInput(boolean isIoInput)
 	{
 		UserCheckout = new Checkout();
@@ -28,6 +28,10 @@ public class SaveUserInput {
 		PointOfSaleInstance = true;
 	}
 
+	public static Checkout GetUserCheckout()
+	{
+		return UserCheckout;
+	}
 	public void RunPointOfSale()
 	{
 		

@@ -10,22 +10,22 @@ import java.util.Locale;
 
 public class RentalAgreement {
 
-	String ToolCode;
-	String ToolType;
-	String ToolBrand;
-	int RentalDays;
-	LocalDate CheckOutDate;
-	LocalDate DueDate;
-	BigDecimal DailyRentalCharge;
-	int ChargeDays;
-	BigDecimal PreDiscountCharge;
-	int DiscountPercent;
-	BigDecimal DiscountAmount;
-	BigDecimal FinalCharge;
-	int PartialWeekDays;
-	int NumberOfFullWeeks;
-	int WeekdayCount;
-	int WeekendDays;
+	private String ToolCode;
+	private 	String ToolType;
+	private String ToolBrand;
+	private int RentalDays;
+	private LocalDate CheckOutDate;
+	private LocalDate DueDate;
+	private BigDecimal DailyRentalCharge;
+	private int ChargeDays;
+	private BigDecimal PreDiscountCharge;
+	private int DiscountPercent;
+	private BigDecimal DiscountAmount;
+	private BigDecimal FinalCharge;
+	private int PartialWeekDays;
+	private int NumberOfFullWeeks;
+	private int WeekdayCount;
+	private int WeekendDays;
 	
 	Tool CustomerTool;
 	
@@ -78,7 +78,7 @@ public class RentalAgreement {
 		
 		if(dateA.getYear() == dateB.getYear())
 		{
-			if(dateA.getMonth() == dateB.getMonth())
+			if(dateA.getMonthValue() == dateB.getMonthValue())
 			{
 				if(dateA.getDayOfMonth() == dateB.getDayOfMonth())
 				{
